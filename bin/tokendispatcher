@@ -1,6 +1,10 @@
 #!/usr/bin/env ruby
 require 'tokendispatcher'
+require 'tokendispatcher/datastruct/fixed_length_queue'
+require 'tokendispatcher/datastruct/lru_cache'
 require 'eventmachine'
 EventMachine.run {
-  EventMachine.start_server "127.0.0.1", 8081, TokenDispatcher::TokenServer
+  queue = EventMachine::DataStruct::Queue.new(10)
+  EventMachine.start_server "127.0.0.1", 8081, TokenDispatcher::TokenServer,queue
+  puts "Listen on port 8081"
 }
