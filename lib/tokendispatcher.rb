@@ -15,6 +15,16 @@ module TokenDispatcher
       if data.to_s.strip == 'fetch'
         fetch_obj = @queue.fetch
         send_data fetch_obj
+      elsif data.to_s.strip == 'status'
+        fetch_obj = @queue.status
+        send_data fetch_obj
+      elsif data.to_s.strip == 'check'
+        fetch_obj = @queue.check
+        send_data fetch_obj
+      elsif data.to_s.strip =~ /^lock/
+        uuid = data.to_s.strip.split(':')[1]
+        @queue.lock! uuid
+        send_data uuid
       end
     end
 

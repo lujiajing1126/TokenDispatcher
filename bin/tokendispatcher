@@ -14,7 +14,8 @@ EventMachine.run {
   queue_length = 10
   queue = TokenDispatcher::DataStruct::Queue.new(queue_length)
   EM::PeriodicTimer.new(100) do
-    queue.check
+    result = queue.check
+    puts result
   end
   EventMachine.start_server "./token.sock", nil, TokenDispatcher::TokenServer,queue
   puts "Listen on port 8081"

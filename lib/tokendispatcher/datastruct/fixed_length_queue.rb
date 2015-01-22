@@ -1,4 +1,5 @@
 require 'uuid'
+require 'json'
 module TokenDispatcher
   module DataStruct
     class Queue
@@ -57,32 +58,28 @@ module TokenDispatcher
       # clean one expired key and add one to avoid overflow bug
       def check
         puts 'checking status'
-        expired = 0
-        locked = 0
         added = 0
         @expires.each do |key,_|
           if expired? key.to_s
             delete! key.to_s
             add!
-            ++ expired
-            ++ added
+            added += 1
           end
         end
 
-        @is_locked.each do |value|
-          if expired_lock? value
-            delete! value.split('%')[0]
-            add!
-            ++ locked
-            ++ added
+        @is_locked.each do |k,_|
+          if expired_lock? k.to_s
+            @is_locked.delete k.to_s.to_sym
+            added += 1
           end
         end
 
-        puts "ExpiredKey:#{expired};LockedKey:#{locked};AddedKeys:#{added}"
-        # if @is_locked.length > (THRESHOLD * @max_size).to_i
-        #   resize
-        #   regenerate
-        # end
+        if @is_locked.length > (THRESHOLD * @max_size).to_i
+          resize
+          regenerate
+        end
+
+        {:ExpiredKey => @expires.length, :LockedKey => @is_locked.length, :AddedKeys => added}.to_json
         #
         # if @is_locked.length < (@max_size * LOWER_THRESHOLD).to_i
         #   resume
@@ -90,13 +87,25 @@ module TokenDispatcher
         # end
       end
 
+      def status
+        {:queue => @queue.length,:locked => @is_locked.length}.to_json
+      end
+
+      def lock!(uuid)
+        @is_locked[uuid.to_sym] = Time.now.to_i unless @is_locked.include? uuid.to_sym
+      end
+
+      def lock_all!
+
+      end
+
       private
       def has?(uuid)
         @queue.index uuid ? true : false
       end
 
-      def expired_lock?(uuid_key)
-        lock_time = uuid_key.split('%')[1].to_i
+      def expired_lock?(uuid)
+        lock_time = @is_locked[uuid.to_sym]
         (Time.now.to_i - lock_time > LOCK_SECONDS) ? true : false
       end
 
@@ -105,11 +114,7 @@ module TokenDispatcher
       end
 
       def locked?(uuid)
-        @is_locked.index(uuid) ? true : false
-      end
-
-      def lock!(uuid)
-        @is_locked << "#{uuid}%#{Time.now.to_i}" unless @is_locked.index uuid
+        @is_locked.include?(uuid) ? true : false
       end
 
       def add!
@@ -127,18 +132,16 @@ module TokenDispatcher
       # delete from Queue unless in use
       def delete!(uuid)
         index = @queue.index uuid
-        index_locked = @is_locked.index uuid
         if index
           @queue.delete_at index
         end
-        if index_locked
-          @is_locked.delete_at index_locked
-        end
+
+        @is_locked.delete uuid.to_sym
         @expires.delete uuid.to_sym
       end
 
       def resize
-        @max_size = (@max_size * RESIZE_RATE).to_i
+        @max_size = (@max_size * (1+RESIZE_RATE)).to_i
       end
 
       def resume
@@ -148,7 +151,7 @@ module TokenDispatcher
       def regenerate
         @queue = []
         @expires = {}
-        @is_locked = []
+        @is_locked = {}
         fill!
       end
     end
