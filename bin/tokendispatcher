@@ -1,10 +1,20 @@
 #!/usr/bin/env ruby
+
+require 'pathname'
+ENV['BUNDLE_GEMFILE'] ||= File.expand_path("../../Gemfile",Pathname.new(__FILE__).realpath)
+
+require 'rubygems'
+require 'bundler/setup'
+
 require 'tokendispatcher'
 require 'tokendispatcher/datastruct/fixed_length_queue'
 require 'tokendispatcher/datastruct/lru_cache'
 require 'eventmachine'
+require 'uuid'
+
 EventMachine.run {
-  queue = EventMachine::DataStruct::Queue.new(10)
-  EventMachine.start_server "127.0.0.1", 8081, TokenDispatcher::TokenServer,queue
+  queue_length = 10
+  queue = TokenDispatcher::DataStruct::Queue.new(queue_length)
+  EventMachine.start_server "./token.sock", nil, TokenDispatcher::TokenServer,queue
   puts "Listen on port 8081"
 }

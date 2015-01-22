@@ -20,4 +20,5 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   s.executables << 'tokendispatcher'
   s.add_runtime_dependency('eventmachine','1.0.4')
+  s.add_runtime_dependency('uuid','2.3.7')
 end

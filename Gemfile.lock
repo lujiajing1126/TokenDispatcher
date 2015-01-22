@@ -3,11 +3,17 @@ PATH
   specs:
     tokendispatcher (0.1.1)
       eventmachine (= 1.0.4)
+      uuid (= 2.3.7)
 
 GEM
   remote: https://rubygems.org/
   specs:
     eventmachine (1.0.4)
+    macaddr (1.7.1)
+      systemu (~> 2.6.2)
+    systemu (2.6.4)
+    uuid (2.3.7)
+      macaddr (~> 1.0)
 
 PLATFORMS
   ruby
