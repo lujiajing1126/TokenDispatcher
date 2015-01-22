@@ -12,12 +12,9 @@ module TokenDispatcher
     end
 
     def receive_data data
-      puts data
       if data.to_s.strip == 'fetch'
         fetch_obj = @queue.fetch
         send_data fetch_obj
-      else
-        send_data(@queue.put(data.to_s.strip))
       end
     end
 

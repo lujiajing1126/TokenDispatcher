@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c03a3dfb-d5a5-4fd3-b8ed-4c3a28bfa654" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gemfile.lock" afterPath="$PROJECT_DIR$/Gemfile.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/TokenDispatcher.iml" afterPath="$PROJECT_DIR$/.idea/TokenDispatcher.iml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/tokendispatcher/datastruct/fixed_length_queue.rb" afterPath="$PROJECT_DIR$/lib/tokendispatcher/datastruct/fixed_length_queue.rb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tokendispatcher.gemspec" afterPath="$PROJECT_DIR$/tokendispatcher.gemspec" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/tokendispatcher.rb" afterPath="$PROJECT_DIR$/lib/tokendispatcher.rb" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bin/tokendispatcher" afterPath="$PROJECT_DIR$/bin/tokendispatcher" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="TokenDispatcher.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,16 +21,17 @@
   <component name="DaemonCodeAnalyzer">
     <disable_hints />
   </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FavoritesManager">
     <favorites_list name="TokenDispatcher" />
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="tokendispatcher" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="tokendispatcher" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/bin/tokendispatcher">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
-              <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+            <state vertical-scroll-proportion="0.13590033" vertical-offset="0" max-vertical-offset="883">
+              <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
               <folding />
             </state>
           </provider>
@@ -43,18 +40,18 @@
       <file leaf-file-name="tokendispatcher.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/tokendispatcher.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="465">
               <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fixed_length_queue.rb" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="fixed_length_queue.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/lib/tokendispatcher/datastruct/fixed_length_queue.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.7281993" vertical-offset="707" max-vertical-offset="2370">
-              <caret line="90" column="9" selection-start-line="90" selection-start-column="9" selection-end-line="90" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="662" max-vertical-offset="2430">
+              <caret line="76" column="20" selection-start-line="76" selection-start-column="20" selection-end-line="76" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -76,9 +73,9 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/lib/tokendispatcher/version.rb" />
         <option value="$PROJECT_DIR$/tokendispatcher.gemspec" />
+        <option value="$PROJECT_DIR$/lib/tokendispatcher/datastruct/fixed_length_queue.rb" />
         <option value="$PROJECT_DIR$/lib/tokendispatcher.rb" />
         <option value="$PROJECT_DIR$/bin/tokendispatcher" />
-        <option value="$PROJECT_DIR$/lib/tokendispatcher/datastruct/fixed_length_queue.rb" />
       </list>
     </option>
   </component>
@@ -444,26 +441,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/bin/tokendispatcher">
+    <entry file="file://$APPLICATION_HOME_DIR$/rubystubs21/mutex.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="390">
-          <caret line="12" column="14" selection-start-line="12" selection-start-column="14" selection-end-line="12" selection-end-column="14" />
+        <state vertical-scroll-proportion="0.36693093" vertical-offset="201" max-vertical-offset="1410">
+          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/tokendispatcher.rb">
+    <entry file="file://$USER_HOME$/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/eventmachine-1.0.4/tests/test_ssl_args.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
-          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+        <state vertical-scroll-proportion="-0.18686296" vertical-offset="240" max-vertical-offset="1245">
+          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.rbenv/versions/2.1.2/lib/ruby/gems/2.1.0/gems/eventmachine-1.0.4/lib/em/timers.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35447338" vertical-offset="122" max-vertical-offset="1005">
+          <caret line="29" column="8" selection-start-line="29" selection-start-column="8" selection-end-line="29" selection-end-column="8" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/lib/tokendispatcher/datastruct/fixed_length_queue.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7281993" vertical-offset="707" max-vertical-offset="2370">
-          <caret line="90" column="9" selection-start-line="90" selection-start-column="9" selection-end-line="90" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="662" max-vertical-offset="2430">
+          <caret line="76" column="20" selection-start-line="76" selection-start-column="20" selection-end-line="76" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/tokendispatcher.rb">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="465">
+          <caret line="6" column="20" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/bin/tokendispatcher">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13590033" vertical-offset="0" max-vertical-offset="883">
+          <caret line="8" column="25" selection-start-line="8" selection-start-column="25" selection-end-line="8" selection-end-column="25" />
           <folding />
         </state>
       </provider>

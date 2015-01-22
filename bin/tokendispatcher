@@ -7,14 +7,15 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'tokendispatcher'
-require 'tokendispatcher/datastruct/fixed_length_queue'
-require 'tokendispatcher/datastruct/lru_cache'
 require 'eventmachine'
 require 'uuid'
 
 EventMachine.run {
   queue_length = 10
   queue = TokenDispatcher::DataStruct::Queue.new(queue_length)
+  EM::PeriodicTimer.new(100) do
+    queue.check
+  end
   EventMachine.start_server "./token.sock", nil, TokenDispatcher::TokenServer,queue
   puts "Listen on port 8081"
 }

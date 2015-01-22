@@ -5,116 +5,89 @@ module TokenDispatcher
       SUCCESS = 127
       FAIL = -1
       MAX_SECONDS = 600
+      LOCK_SECONDS = 300
+      RESIZE_RATE = 0.8
+      THRESHOLD = 0.9
+      LOWER_THRESHOLD = 0.5
+      EXPIRED = "EXPIRED"
+      LOCKED = "CAPTCHA"
+      INVALID = "INVALID"
+      EXHAUSTED = "EXHAUSTED"
       def initialize(size)
-        @max_size = size
+        @default_size = @max_size = size
         @uuid = UUID.new
         regenerate
       end
 
       # fetch the value which in the last position
+      # if queue length > 0, return uuid
+      # if expired, return uuid
+      # if length <= 0, fill the queue and fetch
       def fetch
         if @queue.length > 0
           uuid = @queue.pop
+          @queue.unshift uuid if @queue.length < @max_size
           if expired? uuid
-            delete uuid
-            FAIL.to_s
+            fetch
+          elsif locked? uuid
+            fetch
           else
             uuid
           end
         else
-          generate
-          fetch
+          EXHAUSTED
         end
       end
 
-      def valid?(uuid)
-        is_valid = @queue.index(uuid) && !expired?(uuid)
-        if is_valid
-          true
-        else
-          delete uuid
-          false
+      # check whether the uuid is valid
+      # or NOT_FOUND/EXPIRED/LOCKED
+      def is_valid(uuid)
+        unless has? uuid
+          return INVALID
         end
-      end
-
-      def is_used?(uuid)
-        valid? and @is_used.index uuid ? true : false
-      end
-
-      # put the value into the first position of Queue
-      def put(uuid)
-        if @queue.length < @max_size
-          if has? uuid
-            if expired? uuid
-              delete uuid
-              put uuid
-            else
-              FAIL.to_s
-            end
-          else
-            @queue.unshift uuid
-            @expires[obj.to_s.to_sym] = Time.now.to_i
-            SUCCESS.to_s
-          end
-        else
-          FAIL.to_s
+        if expired? uuid
+          return EXPIRED
         end
-      end
-
-      def putback(uuid)
-        if @queue.length < @max_size
-          @queue.unshift uuid
-          SUCCESS.to_s
-        else
-          FAIL.to_s
+        if locked? uuid
+          return LOCKED
         end
+        true
       end
 
-      # delete from Queue
-      def delete(uuid)
-        index = @queue.index(uuid)
-        @expires.delete uuid.to_sym
-        if index
-          @queue.delete_at index
-          @expires.delete uuid.to_sym
-          generate
-          SUCCESS
-        else
-          @expires.delete uuid.to_sym
-          FAIL
-        end
-      end
-
-      #
-      def delete!(uuid)
-
-      end
-
-      # clean expired keys and uniq keys
-      def clean
-        @expires.each do |k,v|
-          if (index = @queue.index(k.to_s)) != nil
-            unless (Time.now.to_i - v) < MAX_SECONDS
-              @queue.delete_at index
-              @expires.delete k
-            end
-          else
-            @expires.delete k
+      # clean one expired key and add one to avoid overflow bug
+      def check
+        puts 'checking status'
+        expired = 0
+        locked = 0
+        added = 0
+        @expires.each do |key,_|
+          if expired? key.to_s
+            delete! key.to_s
+            add!
+            ++ expired
+            ++ added
           end
         end
-        @queue.uniq!
-        generate
-      end
 
-      # use uuid in non-login status
-      def use!(uuid)
-        notate uuid
-      end
+        @is_locked.each do |value|
+          if expired_lock? value
+            delete! value.split('%')[0]
+            add!
+            ++ locked
+            ++ added
+          end
+        end
 
-      # take uuid into login-status pool
-      def recycle!(uuid)
-        delete uuid
-        generate
+        puts "ExpiredKey:#{expired};LockedKey:#{locked};AddedKeys:#{added}"
+        # if @is_locked.length > (THRESHOLD * @max_size).to_i
+        #   resize
+        #   regenerate
+        # end
+        #
+        # if @is_locked.length < (@max_size * LOWER_THRESHOLD).to_i
+        #   resume
+        #   regenerate
+        # end
       end
 
       private
@@ -122,30 +95,61 @@ module TokenDispatcher
         @queue.index uuid ? true : false
       end
 
-      # notate
-      def notate uuid
-
-      end
-
-      def add
-
-      end
-
-      def generate
-        while @queue.length < @max_size
-          put @uuid.generate
-        end
+      def expired_lock?(uuid_key)
+        lock_time = uuid_key.split('%')[1].to_i
+        (Time.now.to_i - lock_time > LOCK_SECONDS) ? true : false
       end
 
       def expired?(uuid)
         (Time.now.to_i - @expires[uuid.to_sym]) < MAX_SECONDS ? false : true
       end
 
+      def locked?(uuid)
+        @is_locked.index(uuid) ? true : false
+      end
+
+      def lock!(uuid)
+        @is_locked << "#{uuid}%#{Time.now.to_i}" unless @is_locked.index uuid
+      end
+
+      def add!
+        uuid = @uuid.generate.to_s
+        @queue.unshift uuid
+        @expires[uuid.to_sym] = Time.now.to_i
+      end
+
+      def fill!
+        while @queue.length < @max_size
+          add!
+        end
+      end
+
+      # delete from Queue unless in use
+      def delete!(uuid)
+        index = @queue.index uuid
+        index_locked = @is_locked.index uuid
+        if index
+          @queue.delete_at index
+        end
+        if index_locked
+          @is_locked.delete_at index_locked
+        end
+        @expires.delete uuid.to_sym
+      end
+
+      def resize
+        @max_size = (@max_size * RESIZE_RATE).to_i
+      end
+
+      def resume
+        @max_size = @default_size
+      end
+
       def regenerate
         @queue = []
         @expires = {}
-        @is_used = []
-        generate
+        @is_locked = []
+        fill!
       end
     end
   end
